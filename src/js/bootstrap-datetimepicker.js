@@ -56,6 +56,7 @@
         var defaults = {
             pickDate: true,
             pickTime: true,
+            useAccordion: true,
             useMinutes: true,
             useSeconds: false,
             minuteStepping: 1,
@@ -144,7 +145,7 @@
                 }
             }
 
-            picker.widget = $(getTemplate(picker.options.pickDate, picker.options.pickTime, picker.options.collapse)).appendTo('body');
+            picker.widget = $(getTemplate(picker.options.pickDate, picker.options.pickTime, picker.options.collapse, picker.options.useAccordion)).appendTo('body');
             picker.minViewMode = picker.options.minViewMode || picker.element.data('date-minviewmode') || 0;
             if (typeof picker.minViewMode === 'string') {
                 switch (picker.minViewMode) {
@@ -864,8 +865,8 @@
             else return '0' + string;
         },
 
-        getTemplate = function (pickDate, pickTime, collapse) {
-            if (pickDate && pickTime) {
+        getTemplate = function (pickDate, pickTime, collapse,useAccordion) {
+            if (pickDate && pickTime && useAccordion) {
                 return (
                     '<div class="bootstrap-datetimepicker-widget dropdown-menu" style="z-index:9999 !important;">' +
                         '<ul class="list-unstyled">' +
@@ -876,6 +877,20 @@
 							'<li' + (collapse ? ' class="collapse"' : '') + '>' +
 								'<div class="timepicker">' + tpGlobal.getTemplate() + '</div>' +
 							'</li>' +
+                        '</ul>' +
+                    '</div>'
+                );
+            } else if (pickDate && pickTime) {
+                return (
+                    '<div class="bootstrap-datetimepicker-widget dropdown-menu" style="z-index:9999 !important;">' +
+                        '<ul class="list-unstyled">' +
+				'<li' + (collapse ? ' class="collapse in"' : '') + '>' +
+					'<div class="datepicker">' + dpGlobal.template + '</div>' +
+				'</li>' +
+				'<li class="picker-switch"><a class="btn" style="width:100%"><span class="' + picker.options.icons.time + '"></span></a></li>' +
+				'<li>' +
+				'<div class="timepicker">' + tpGlobal.getTemplate() + '</div>' +
+				'</li>' +
                         '</ul>' +
                     '</div>'
                 );
